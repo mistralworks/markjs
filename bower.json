@@ -1,0 +1,27 @@
+{
+  "name": "markjs",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mistralworks/markjs",
+  "authors": [
+    "Yoza Wiratama <Yoza Wiratama>"
+  ],
+  "description": "Simplest js mvvm framework to templating and data binding.",
+  "main": "mark.js",
+  "keywords": [
+    "mvvm",
+    "js",
+    "javascript",
+    "framework",
+    "template",
+    "realtime",
+    "mvc"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
