@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="mark.js"></script>
+</head>
+
+<body>
+    <!--
+    <div mk="testTmpl"></div>
+<hr /> <b mk="coolTmpl"></b>
+<hr />
+<div mk="paragraphTmpl"></div>
+-->
+    <div mk="inputTmpl"></div>
+    <template name="testTmpl"><span mk-text="Counter">2</span></template>
+    <template name="coolTmpl"><span mk-text="Counter">3</span> COOL!!!</template>
+    <template name="paragraphTmpl">
+        <p mk-text="Story">3</p>
+    </template>
+    <template name="inputTmpl">
+        <input mk-value="newItem" type="text" />
+        <input mk-value="cbx" type="checkbox" />
+        <button type="button">add</button>
+    </template>
+    <script>
+        Mark.set('Counter', 1);
+        Mark.set('newItem', 'test');
+        Mark.set('cbx', true);
+        Template.inputTmpl.Events = {
+            'click button': function (e) {
+                console.log(call);
+            }
+        };
+        console.log(Template.inputTmpl);
+    </script>
+</body>
+
+</html>
