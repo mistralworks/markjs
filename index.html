@@ -9,15 +9,20 @@
 </head>
 
 <body>
-    <!--
     <div mk="testTmpl"></div>
+    <!--
+    
 <hr /> <b mk="coolTmpl"></b>
 <hr />
 <div mk="paragraphTmpl"></div>
 -->
     <!--    <div mk="inputTmpl"></div>-->
-    <div mk="listTmpl"></div>
-    <template name="testTmpl"><span mk-text="Counter">2</span></template>
+    <!--    <div mk="listTmpl"></div>-->
+    <template name="testTmpl">
+        <span mk-text="Name">2</span>
+        <span mk-text="Name">2</span>
+        <span mk-text="Name">2</span>
+    </template>
     <template name="coolTmpl"><span mk-text="Counter">3</span> COOL!!!</template>
     <template name="paragraphTmpl">
         <p mk-text="Story">3</p>
@@ -33,6 +38,7 @@
         </ol>
     </template>
     <script>
+        Mark.set('Name', 'Yoza');
         //        Mark.set('Counter', 1); // Mark.set('newItem', 'test'); // Mark.set('cbx', true);
         Mark.set('list', [
             {

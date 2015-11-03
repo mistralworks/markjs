@@ -1,41 +1,42 @@
 /*! Copyright (c) 2015 Yoza Wiratama
  * Licensed under the MIT License (LICENSE)
+ * mark.js v0.0.1
  */
 
 (function () {
-        //std
-        var tIdLength = 8;
-        //global variable for template and Mark
-        Template = {};
-        Mark = {};
-        //doc manipulation
-        var page = document.documentElement.innerHTML; //html page 1st when iniatiated
-        //    console.log(page);
-        Mark.set = function (property, value) {
-            Mark[property] = value;
-            renderPage();
-        }
+    //std
+    var tIdLength = 8;
+    //global variable for template and Mark
+    Template = {};
+    Mark = {};
+    //doc manipulation
+    var page = document.documentElement.innerHTML; //html page 1st when iniatiated
+    //    console.log(page);
+    Mark.set = function (property, value) {
+        Mark[property] = value;
+        renderPage();
+    }
 
-        Mark.get = function (property) {
-            return Mark[property];
-        }
+    Mark.get = function (property) {
+        return Mark[property];
+    }
 
-        //do anything when content loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            renderPage();
-        }, false);
+    //do anything when content loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        renderPage();
+    }, false);
 
-        //render page
-        function renderPage() {
-            //init all template in page
-            var tmpl = document.getElementsByTagName('template');
-            for (var ii = 0; ii < tmpl.length; ii++) {
-                var d = vk
+    //render page
+    function renderPage() {
+        //init all template in page
+        var tmpl = document.getElementsByTagName('template');
+        for (var ii = 0; ii < tmpl.length; ii++) {
+            var d = {
                 HTML: tmpl[ii].innerHTML,
-                    Helpers: {},
-                    Events: {},
-                    Elements: {},
-                    Name: getTemplateName(tmpl[ii])
+                Helpers: {},
+                Events: {},
+                Elements: {},
+                Name: getTemplateName(tmpl[ii])
             };
             Template[getTemplateName(tmpl[ii])] = d;
             renderTemplate(d.Name, d.HTML);
