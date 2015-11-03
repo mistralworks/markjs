@@ -1,7 +1,8 @@
 # markjs (0.0.1)
 mark is a javascript mvvm framework, easy to templating and data binding.
 
-# Pilosophy
+# Phiilosophy
+Ordinary but divine. Web can controlled with a single control called `Mark`.
 
 # Development Target
 1. Mark (V) <= v0.0.1
