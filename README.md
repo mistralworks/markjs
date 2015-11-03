@@ -28,26 +28,26 @@ Template like controller-like in mvc. `template` have `name` attribute, that wil
 ## Text
 Simple use `Mark.set('name', 'value');` and render it on `mk-text`
 ```
-    <b mk="coolTmpl"></b>
-    <template name="coolTmpl">Hello, <span mk-text="Name"></span></template>
-    <script>
-        Mark.set('Name', 'Yoza');
-    </script>
+<b mk="coolTmpl"></b>
+<template name="coolTmpl">Hello, <span mk-text="Name"></span></template>
+<script>
+    Mark.set('Name', 'Yoza');
+</script>
 ```
 Open your console type `Mark.set('Name', 'Dhika')`, it will update `mk-text="Name"`.
 
 ## Input
 Input provided by two mark for now, that are `mk-val` and `mk-check`.
 ```
-    <div mk="inputTmpl"></div>
-    <template name="inputTmpl">
-        <input mk-value="newItem" type="text" />
-        <input mk-check="cbx" type="checkbox" />
-    </template>
-    <script>
-        Mark.set('newItem', 'test');
-        Mark.set('cbx', true);
-    </script>
+<div mk="inputTmpl"></div>
+<template name="inputTmpl">
+    <input mk-value="newItem" type="text" />
+    <input mk-check="cbx" type="checkbox" />
+</template>
+<script>
+    Mark.set('newItem', 'test');
+    Mark.set('cbx', true);
+</script>
 ```
 ----
 #LICENSE
