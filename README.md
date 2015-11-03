@@ -1,4 +1,4 @@
-# markjs
+# markjs (0.0.1)
 mark is a javascript mvvm framework, easy to templating and data binding.
 
 # Pilosophy
@@ -14,7 +14,13 @@ mark is a javascript mvvm framework, easy to templating and data binding.
 
 #how to use
 Use `mark.js` in html :
-`<script src="mark.js"></script>`
+```
+<script src="mark.js"></script>
+```
+or
+```
+<script src="mark.min.js"></script>
+```
 Mark is a global variable that will reactive any subscriber and update that data or render it.
 
 ## Template
