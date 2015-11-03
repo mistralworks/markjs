@@ -15,7 +15,8 @@
 <hr />
 <div mk="paragraphTmpl"></div>
 -->
-    <div mk="inputTmpl"></div>
+    <!--    <div mk="inputTmpl"></div>-->
+    <div mk="listTmpl"></div>
     <template name="testTmpl"><span mk-text="Counter">2</span></template>
     <template name="coolTmpl"><span mk-text="Counter">3</span> COOL!!!</template>
     <template name="paragraphTmpl">
@@ -23,13 +24,27 @@
     </template>
     <template name="inputTmpl">
         <input mk-value="newItem" type="text" />
-        <input mk-value="cbx" type="checkbox" />
+        <input mk-check="cbx" type="checkbox" />
         <button type="button">add</button>
     </template>
+    <template name="listTmpl">
+        <ol mk-list="list">
+            <li mk-list-item><span mk-text="text">test</span></li>
+        </ol>
+    </template>
     <script>
-        Mark.set('Counter', 1);
-        Mark.set('newItem', 'test');
-        Mark.set('cbx', true);
+        //        Mark.set('Counter', 1); // Mark.set('newItem', 'test'); // Mark.set('cbx', true);
+        Mark.set('list', [
+            {
+                text: 'Satu'
+            },
+            {
+                text: 'Dua'
+            },
+            {
+                text: 'Tiga'
+            }
+                         ]);
         Template.inputTmpl.Events = {
             'click button': function (e) {
                 console.log(call);
