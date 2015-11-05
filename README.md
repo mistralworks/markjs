@@ -1,4 +1,4 @@
-# markjs (0.0.1)
+# markjs (0.0.1.5)
 mark is a javascript mvvm framework, easy to templating and data binding.
 
 # Phiilosophy
@@ -27,10 +27,15 @@ Mark is a global variable that will reactive any subscriber and update that data
 ## Template
 This will render `Hello World`
 ```
-<div mk="testTmpl"></div>
+<div mk="template=testTmpl"></div>
 <template name="testTmpl">Hello World</template>
 ```
-Template like controller-like in mvc. `template` have `name` attribute, that will be a token to render template in a html element with attribute `mk` with same value.
+Template like controller-like in mvc. `template` have `name` attribute, that will be a token to render template in a html element with attribute `mk` with mark `template`.
+
+```
+<div mk="testTmpl"></div>
+<template name="testTmpl"><span mk="text=Name"></span></template>
+```
 
 ## Text
 Simple use `Mark.set('name', 'value');` and render it on `mk-text`

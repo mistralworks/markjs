@@ -1,20 +1,19 @@
 /*! Copyright (c) 2015 Yoza Wiratama
  * Licensed under the MIT License (LICENSE)
- * mark.js v0.0.1
+ * mark.js v0.0.1.5
  */
 
 (function () {
-    //std
-    var tIdLength = 8;
     //global variable for template and Mark
+    MarkNodes = [];
     Template = {};
     Mark = {};
-    //doc manipulation
-    var page = document.documentElement.innerHTML; //html page 1st when iniatiated
-    //    console.log(page);
+
     Mark.set = function (property, value) {
+
         Mark[property] = value;
-        renderPage();
+        renderMark(property);
+        renderTemplates();
     }
 
     Mark.get = function (property) {
@@ -23,134 +22,118 @@
 
     //do anything when content loaded
     document.addEventListener('DOMContentLoaded', function () {
-        renderPage();
+        initMark();
+        renderMarks();
+        renderTemplates();
     }, false);
 
-    //render page
-    function renderPage() {
-        //init all template in page
-        var tmpl = document.getElementsByTagName('template');
-        for (var ii = 0; ii < tmpl.length; ii++) {
-            var d = {
-                HTML: tmpl[ii].innerHTML,
-                Helpers: {},
+    function initMark() {
+        var nodes = document.querySelectorAll('[mk]');
+        for (var ii = 0; ii < nodes.length; ++ii) {
+            var marks = nodes[ii].getAttribute('mk').split(';');
+            var Marks = [];
+            for (var jj = 0; jj < marks.length; jj++) {
+                var nv = marks[jj].split('=');
+                Marks.push({
+                    Name: nv[0],
+                    Value: nv[1]
+                });
+            }
+
+            nodes[ii].addEventListener('keypress', function (e) {
+                var value = this.value;
+                if (String.fromCharCode(e.keyCode) != "")
+                    value = this.value + String.fromCharCode(e.keyCode);
+                marks = this.getAttribute('mk').split(';');
+                for (var jj = 0; jj < marks.length; jj++) {
+                    var nv = marks[jj].split('=');
+                    if (nv[0] === 'value') {
+                        Mark.set(nv[1], value);
+                    }
+                }
+            });
+
+            MarkNodes.push({
+                Node: nodes[ii],
+                Marks: Marks
+            });
+        };
+
+        var templates = document.getElementsByTagName('template');
+        for (var ii = 0; ii < templates.length; ii++) {
+            var c = templates[0].content.children;
+            var t = {
+                Name: templates[ii].getAttribute('name'),
+                Node: templates[ii],
+                ChildNodes: [],
                 Events: {},
-                Elements: {},
-                Name: getTemplateName(tmpl[ii])
+                Helpers: {}
             };
-            Template[getTemplateName(tmpl[ii])] = d;
-            renderTemplate(d.Name, d.HTML);
+            for (var jj = 0; jj < c.length; jj++) {
+                if (c[jj].getAttribute('mk'))
+                    t.ChildNodes.push(c[jj]);
+            }
+
+            Template[templates[ii].getAttribute('name')] = t;
         }
     }
-    //render template
-    renderTemplate = function (name, template) {
-        var allElements = document.getElementsByTagName('*');
-        for (var i = 0, n = allElements.length; i < n; i++) {
-            if (allElements[i].getAttribute("mk") !== null) {
-                //for each mark template
-                if (allElements[i].getAttribute("mk") === name) {
-                    allElements[i].innerHTML = template;
-                    //mk-text
-                    var nodeMKText = document.querySelectorAll('[mk="' + name + '"] [mk-text]');
-                    for (var j = 0; j < nodeMKText.length; j++) {
-                        var sName = nodeMKText[j].getAttribute('mk-text');
-                        if (Mark[sName])
-                            updateMKText(name, sName, Mark[sName]);
-                        else updateMKText(name, sName, "");
-                    }
-                    //mk-value
-                    var nodeMKValue = document.querySelectorAll('[mk="' + name + '"] [mk-value]');
-                    for (var j = 0; j < nodeMKValue.length; j++) {
-                        var sName = nodeMKValue[j].getAttribute('mk-value');
-                        if (Mark[sName])
-                            updateMKValue(name, sName, Mark[sName]);
-                        else updateMKValue(name, sName, "");
-                    }
 
-                    //mk-check
-                    var nodeMKCheck = document.querySelectorAll('[mk="' + name + '"] [mk-check]');
-                    for (var j = 0; j < nodeMKCheck.length; j++) {
-                        var sName = nodeMKCheck[j].getAttribute('mk-check');
-                        if (Mark[sName])
-                            updateMKCheck(name, sName, Mark[sName]);
-                        else updateMKCheck(name, sName, false);
-                    }
+    function renderMarks() {
+        var markkey = Object.keys(Mark);
+        for (var ii = 0; ii < markkey.length; ii++) {
+            renderMark(markkey[ii]);
+        }
+    }
 
-                    //mk-list
-                    var nodeMKList = document.querySelectorAll('[mk="' + name + '"] [mk-list]');
-                    for (var j = 0; j < nodeMKList.length; j++) {
-                        var sName = nodeMKList[j].getAttribute('mk-list');
-                        if (Mark[sName])
-                            updateMKList(name, sName, Mark[sName]);
-                        else updateMKList(name, sName, []);
-                    }
-
-                    //events
-
+    // name : mark's name
+    function renderMark(name) {
+        for (var ii = 0; ii < MarkNodes.length; ii++) {
+            for (var jj = 0; jj < MarkNodes[ii].Marks.length; jj++) {
+                var mark = MarkNodes[ii].Marks[jj];
+                if (mark.Name === 'text' && mark.Value === name) {
+                    MarkNodes[ii].Node.innerHTML = Mark.get(name);
+                } else if (mark.Name === 'value' && mark.Value === name) {
+                    MarkNodes[ii].Node.value = Mark.get(name);
+                } else if (mark.Name === 'check' && mark.Value === name) {
+                    MarkNodes[ii].Node.checked = Mark.get(name);
                 }
 
             }
         }
-
     }
 
-    function updateMKText(tmplName, txtName, value) {
-        var nodes = document.querySelectorAll('[mk="' + tmplName + '"] [mk-text="' + txtName + '"]');
-        for (i = 0; i < nodes.length; ++i) {
-            nodes[i].innerHTML = value;
+    function renderTemplates() {
+        var key = Object.keys(Template);
+        for (var ii = 0; ii < key.length; ii++) {
+            renderTemplate(key[ii]);
         }
-    };
+    }
 
-    function updateMKValue(tmplName, txtName, value) {
-        var nodes = document.querySelectorAll('[mk="' + tmplName + '"] [mk-value="' + txtName + '"]');
-        for (i = 0; i < nodes.length; ++i) {
-            nodes[i].value = value;
-        }
-    };
-
-    function updateMKCheck(tmplName, txtName, value) {
-        var nodes = document.querySelectorAll('[mk="' + tmplName + '"] [mk-check="' + txtName + '"]');
-        for (i = 0; i < nodes.length; ++i) {
-            nodes[i].checked = value;
-        }
-    };
-
-    function updateMKList(tmplName, txtName, value) {
-        var nodes = document.querySelectorAll('[mk="' + tmplName + '"] [mk-list="' + txtName + '"]');
-        var item;
-        for (i = 0; i < nodes.length; ++i) {
-            for (var v = 0; v < value.length; v++) {
-                var items = nodes[i].querySelectorAll('[mk-list-item]');
-                var item = document.createElement("li");
-                item.innerHTML = 'hore';
-                nodes[i].appendChild(item);
-                //                for (j = 0; j < items.length; ++j) {
-                //                    var texts = items[j].querySelectorAll('[mk-text]');
-                //                    item = items[j];
-                //                    for (k = 0; k < texts.length; ++k) {
-                //                        texts[k].innerHTML = value[v][texts[k].getAttribute('mk-text')];
-                //                    }
-                //
-                //                }
+    function renderTemplate(name) {
+        for (var ii = 0; ii < MarkNodes.length; ii++) {
+            for (var jj = 0; jj < MarkNodes[ii].Marks.length; jj++) {
+                var mark = MarkNodes[ii].Marks[jj];
+                if (mark.Name === 'template' && mark.Value === name) {
+                    var t = Template[name].ChildNodes;
+                    for (var kk = 0; kk < t.length; kk++) {
+                        var m = t[kk].getAttribute('mk').split(';');
+                        for (var ll = 0; ll < m.length; ll++) {
+                            t[kk].innerHTML = Mark.get('Name');
+                        }
+                    }
+                    MarkNodes[ii].Node.innerHTML = getTemplate(name);
+                }
 
             }
         }
-    };
+    }
+
+    function getTemplate(name) {
+        return Template[name].Node.innerHTML;
+    }
 
 
     //support
-    function getAllElementsWithAttribute(attribute) {
-        var matchingElements = [];
-        var allElements = document.getElementsByTagName('*');
-        for (var i = 0, n = allElements.length; i < n; i++) {
-            if (allElements[i].getAttribute(attribute) !== null) {
-                // Element exists with attribute. Add to array.
-                matchingElements.push(allElements[i]);
-            }
-        }
-        return matchingElements;
-    }
-
     function makeid(length) {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -9,7 +9,18 @@
 </head>
 
 <body>
-    <div mk="testTmpl"></div>
+    <!--    <div mk="testTmpl"></div>-->
+    <h3>Text</h3>
+    <div mk="text=Name"></div>
+
+    <input type="text" mk="value=Name" />
+    <hr />
+    <h3>Check</h3>
+    <div mk="text=cbx"></div>
+    <input mk="check=cbx" type="checkbox" />
+    <hr />
+    <h3>Template</h3>
+    <div mk="template=testTmpl"></div>
     <!--
     
 <hr /> <b mk="coolTmpl"></b>
@@ -19,9 +30,9 @@
     <!--    <div mk="inputTmpl"></div>-->
     <!--    <div mk="listTmpl"></div>-->
     <template name="testTmpl">
-        <span mk-text="Name">2</span>
-        <span mk-text="Name">2</span>
-        <span mk-text="Name">2</span>
+        <span mk="text=Name">2</span>
+        <span mk="text=Name">2</span>
+        <span mk="text=Name">2</span>
     </template>
     <template name="coolTmpl"><span mk-text="Counter">3</span> COOL!!!</template>
     <template name="paragraphTmpl">
@@ -39,7 +50,8 @@
     </template>
     <script>
         Mark.set('Name', 'Yoza');
-        //        Mark.set('Counter', 1); // Mark.set('newItem', 'test'); // Mark.set('cbx', true);
+        Mark.set('cbx', true);
+        //        Mark.set('Counter', 1); // Mark.set('newItem', 'test'); // 
         Mark.set('list', [
             {
                 text: 'Satu'
